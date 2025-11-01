@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechRoute - Login & Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+        }
+
+        /* Logo - Updated to match landing page */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background-color: white;
+            border-radius: 20%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 110%;
+            height: 75%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .logo-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-radius: 50px;
+            background: #f0f5ff;
+            padding: 5px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: #007BFF;
+            color: white;
+            box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Form Styles */
+        .form {
+            display: none;
+        }
+
+        .form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom:-25px;
+            font-size: 24px;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e7ff;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-input:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            outline: none;
+        }
+
+        /* Social Buttons */
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #e0e7ff;
+            background: white;
+            color: #555;
+        }
+
+        .social-btn i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .social-btn.google:hover {
+            background: #f8f9ff;
+            border-color: #db4437;
+            color: #db4437;
+        }
+
+        .social-btn.facebook:hover {
+            background: #f8f9ff;
+            border-color: #4267B2;
+            color: #4267B2;
+        }
+
+        .social-btn.email:hover {
+            background: #f8f9ff;
+            border-color: #007BFF;
+            color: #007BFF;
+        }
+
+        /* Primary Button */
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            background: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Links */
+        .form-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .link {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #777;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e7ff;
+        }
+
+        .divider span {
+            padding: 0 15px;
+            font-size: 14px;
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            height: 5px;
+            border-radius: 5px;
+            margin-top: 8px;
+            background: #e0e7ff;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .strength-weak {
+            background: #ff4757;
+            width: 33%;
+        }
+
+        .strength-medium {
+            background: #ffa502;
+            width: 66%;
+        }
+
+        .strength-strong {
+            background: #2ed573;
+            width: 100%;
+        }
+
+        .password-hint {
+            font-size: 12px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .form-card {
+                padding: 18px 20px;
+            }
+            
+            .logo-title {
+                font-size: 18px;
+            }
+            
+            .form-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo - Updated to match landing page -->
+        <div class="logo-container">
+            <div class="logo">
+                <img src="images/techroute.png" alt="TechRoute Logo">
+            </div>
+            <div class="logo-title">TechRoute</div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="form-card">
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" data-tab="login">Login</div>
+                <div class="tab" data-tab="signup">Sign Up</div>
+            </div>
+
+            <!-- Login Form -->
+            <form class="form active" id="login-form">
+                <h2 class="form-title">Welcome Back</h2>
+                
+                <div class="social-buttons">
+                    <button type="button" class="social-btn google">
+                        <i class="fab fa-google"></i> Continue with Google
+                    </button>
+                    <button type="button" class="social-btn facebook">
+                        <i class="fab fa-facebook-f"></i> Continue with Facebook
+                    </button>
+                    <button type="button" class="social-btn email" id="email-login-btn">
+                        <i class="fas fa-envelope"></i> Continue with Email
+                    </button>
+                </div>
+
+                <div class="divider">
+                    <span>Or</span>
+                </div>
+
+                <div class="email-fields" id="email-login-fields" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label" for="login-email">Email Address</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="Enter your email">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </div>
+
+                <div class="form-links">
+                    <a href="#" class="link">Forgot Password?</a>
+                    <p style="margin-top: 15px;">Don't have an account? <a href="#" class="link" id="switch-to-signup">Create one</a></p>
+                </div>
+            </form>
+
+            <!-- Signup Form -->
+            <form class="form" id="signup-form">
+                <h2 class="form-title">Create Account</h2>
+                
+                <div class="form-group">
+                    <label class="form-label" for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="signup-email">Email Address</label>
+                    <input type="email" id="signup-email" class="form-input" placeholder="Enter your email">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="signup-password">Password</label>
+                    <input type="password" id="signup-password" class="form-input" placeholder="Create a password">
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="password-strength-bar"></div>
+                    </div>
+                    <div class="password-hint" id="password-hint">Use 8+ characters with a mix of letters, numbers & symbols</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" class="form-input" placeholder="Confirm your password">
+                    <div class="password-hint" id="confirm-password-hint"></div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Create Account</button>
+
+                <div class="form-links">
+                    <p style="margin-top: 15px;">Already have an account? <a href="#" class="link" id="switch-to-login">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const forms = document.querySelectorAll('.form');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding form
+                    forms.forEach(form => {
+                        form.classList.remove('active');
+                        if (form.id === `${targetTab}-form`) {
+                            form.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Switch between login and signup links
+            document.getElementById('switch-to-signup').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.tab[data-tab="signup"]').click();
+            });
+            
+            document.getElementById('switch-to-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector('.tab[data-tab="login"]').click();
+            });
+            
+            // Email field toggles
+            document.getElementById('email-login-btn').addEventListener('click', function() {
+                const emailFields = document.getElementById('email-login-fields');
+                emailFields.style.display = emailFields.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Password strength indicator
+            const passwordInput = document.getElementById('signup-password');
+            const passwordStrengthBar = document.getElementById('password-strength-bar');
+            const passwordHint = document.getElementById('password-hint');
+            
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 8) strength += 1;
+                if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+                if (password.match(/\d/)) strength += 1;
+                if (password.match(/[^a-zA-Z\d]/)) strength += 1;
+                
+                // Update strength bar
+                passwordStrengthBar.className = 'password-strength-bar';
+                if (password.length === 0) {
+                    passwordHint.textContent = 'Use 8+ characters with a mix of letters, numbers & symbols';
+                } else if (strength <= 1) {
+                    passwordStrengthBar.classList.add('strength-weak');
+                    passwordHint.textContent = 'Weak password - try adding uppercase letters, numbers, or symbols';
+                } else if (strength <= 2) {
+                    passwordStrengthBar.classList.add('strength-medium');
+                    passwordHint.textContent = 'Medium password - could be stronger';
+                } else {
+                    passwordStrengthBar.classList.add('strength-strong');
+                    passwordHint.textContent = 'Strong password!';
+                }
+            });
+            
+            // Password confirmation check
+            const confirmPasswordInput = document.getElementById('signup-confirm-password');
+            const confirmPasswordHint = document.getElementById('confirm-password-hint');
+            
+            confirmPasswordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                const confirmPassword = this.value;
+                
+                if (confirmPassword.length === 0) {
+                    confirmPasswordHint.textContent = '';
+                } else if (password === confirmPassword) {
+                    confirmPasswordHint.textContent = 'Passwords match!';
+                    confirmPasswordHint.style.color = '#2ed573';
+                } else {
+                    confirmPasswordHint.textContent = 'Passwords do not match';
+                    confirmPasswordHint.style.color = '#ff4757';
+                }
+            });
+            
+            // Form submissions
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (email && password) {
+                    alert('Login successful! Redirecting...');
+                    // In a real app, you would handle authentication here
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            document.getElementById('signup-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm-password').value;
+                
+                if (name && email && password && confirmPassword) {
+                    if (password === confirmPassword) {
+                        alert('Account created successfully!');
+                        // In a real app, you would handle registration here
+                    } else {
+                        alert('Passwords do not match');
+                    }
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            // Social button handlers
+            document.querySelectorAll('.social-btn.google').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Redirecting to Google authentication...');
+                });
+            });
+            
+            document.querySelectorAll('.social-btn.facebook').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Redirecting to Facebook authentication...');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechRoute - Progress Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Navbar - Matching landing page */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 20%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .nav-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .profile-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1e3a8a;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.6s forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Progress Overview */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .progress-bg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #e0e7ff;
+        }
+
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(#3b82f6 0deg, #e0e7ff 0deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-percent {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e3a8a;
+        }
+
+        .progress-label {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .progress-info {
+            flex: 1;
+        }
+
+        .progress-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #1e3a8a;
+        }
+
+        .progress-info p {
+            color: #64748b;
+            margin-bottom: 15px;
+        }
+
+        /* Badges Section */
+        .badges-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .badge {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .badge.active {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+            transform: scale(1.05);
+        }
+
+        .badge-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .badge-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .badge-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Streak Section */
+        .streak-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .streak-calendar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .streak-day {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            background: #e0e7ff;
+            color: #1e3a8a;
+        }
+
+        .streak-day.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .streak-info {
+            flex: 1;
+        }
+
+        .streak-count {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+
+        .streak-label {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        /* DSA Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Motivational Section */
+        .motivational-card {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        .motivational-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .motivational-text {
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+
+        .motivational-author {
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background: #1e3a8a;
+            color: white;
+            margin-top: 40px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .badges-container {
+                flex-direction: column;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .navbar {
+                padding: 15px 5%;
+            }
+            
+            .logo-text {
+                font-size: 22px;
+            }
+            
+            .logo {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .progress-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .streak-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <div class="logo">
+                <img src="images/techroute.png" alt="TechRoute Logo">
+            </div>
+            <div class="logo-text">TechRoute</div>
+        </div>
+        <div class="nav-profile">
+            <button class="profile-btn">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1 class="page-title">Your Progress Dashboard 📊</h1>
+        
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Progress Overview -->
+            <div class="dashboard-card" style="animation-delay: 0.1s">
+                <h2 class="card-title"><i class="fas fa-chart-line"></i> Progress Overview</h2>
+                <div class="progress-container">
+                    <div class="circular-progress">
+                        <div class="progress-bg"></div>
+                        <div class="progress-fill" id="progressFill">
+                            <div class="progress-text">
+                                <div class="progress-percent" id="progressPercent">65%</div>
+                                <div class="progress-label">Complete</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="progress-info">
+                        <h3>Full Stack Developer Journey</h3>
+                        <p>You're making great progress! Keep up the consistent learning to reach your goals faster.</p>
+                        <div class="progress-details">
+                            <p><strong>Modules Completed:</strong> 13/20</p>
+                            <p><strong>Current Module:</strong> React & Redux</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Badges / Levels -->
+            <div class="dashboard-card" style="animation-delay: 0.2s">
+                <h2 class="card-title"><i class="fas fa-trophy"></i> Your Level</h2>
+                <div class="badges-container">
+                    <div class="badge">
+                        <div class="badge-icon">🌱</div>
+                        <div class="badge-title">Beginner</div>
+                        <div class="badge-desc">Getting started</div>
+                    </div>
+                    <div class="badge active">
+                        <div class="badge-icon">🚀</div>
+                        <div class="badge-title">Pro</div>
+                        <div class="badge-desc">Current Level</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">🏆</div>
+                        <div class="badge-title">Expert</div>
+                        <div class="badge-desc">Keep learning!</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weekly Learning Streak -->
+            <div class="dashboard-card" style="animation-delay: 0.3s">
+                <h2 class="card-title"><i class="fas fa-fire"></i> Learning Streak</h2>
+                <div class="streak-container">
+                    <div class="streak-calendar">
+                        <div class="streak-day active">M</div>
+                        <div class="streak-day active">T</div>
+                        <div class="streak-day active">W</div>
+                        <div class="streak-day active">T</div>
+                        <div class="streak-day active">F</div>
+                        <div class="streak-day">S</div>
+                        <div class="streak-day">S</div>
+                    </div>
+                    <div class="streak-info">
+                        <div class="streak-count">5 Days</div>
+                        <div class="streak-label">Current Learning Streak 🔥</div>
+                        <p style="margin-top: 10px; font-size: 0.9rem; color: #64748b;">Complete today's lesson to continue your streak!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DSA Practice Stats -->
+            <div class="dashboard-card" style="animation-delay: 0.4s">
+                <h2 class="card-title"><i class="fas fa-code"></i> DSA Practice</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-icon">💻</div>
+                        <div class="stat-value">127</div>
+                        <div class="stat-label">Problems Solved</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value">5/5</div>
+                        <div class="stat-label">Daily Target</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🧠</div>
+                        <div class="stat-value">87%</div>
+                        <div class="stat-label">Accuracy</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Motivational Section -->
+            <div class="dashboard-card motivational-card" style="animation-delay: 0.5s">
+                <div class="motivational-icon">💡</div>
+                <div class="motivational-text" id="motivationalQuote">"Consistency beats intensity — 1% better every day!"</div>
+                <div class="motivational-author" id="quoteAuthor">- James Clear, Atomic Habits</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 TechRoute | Keep pushing forward 💪</p>
+    </footer>
+
+    <script>
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set progress circle
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressValue = 65; // 65% progress
+            
+            progressFill.style.background = `conic-gradient(#3b82f6 ${progressValue * 3.6}deg, #e0e7ff 0deg)`;
+            progressPercent.textContent = `${progressValue}%`;
+            
+            // Motivational quotes
+            const motivationalQuotes = [
+                {
+                    text: "Consistency beats intensity — 1% better every day!",
+                    author: "James Clear, Atomic Habits"
+                },
+                {
+                    text: "The expert in anything was once a beginner.",
+                    author: "Helen Hayes"
+                },
+                {
+                    text: "The only way to learn programming is by writing programs.",
+                    author: "Dennis Ritchie"
+                },
+                {
+                    text: "Code is like humor. When you have to explain it, it's bad.",
+                    author: "Cory House"
+                },
+                {
+                    text: "Programming isn't about what you know; it's about what you can figure out.",
+                    author: "Chris Pine"
+                }
+            ];
+            
+            // Set random motivational quote
+            const randomIndex = Math.floor(Math.random() * motivationalQuotes.length);
+            document.getElementById('motivationalQuote').textContent = `"${motivationalQuotes[randomIndex].text}"`;
+            document.getElementById('quoteAuthor').textContent = `- ${motivationalQuotes[randomIndex].author}`;
+            
+            // Logout button functionality
+            document.querySelector('.profile-btn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    alert('Logged out successfully!');
+                    window.location.href = 'index.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
