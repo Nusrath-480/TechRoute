@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -31,7 +30,6 @@
             max-width: 450px;
         }
 
-        /* Logo - Updated to match landing page */
         .logo-container {
             text-align: center;
             margin-bottom: 30px;
@@ -57,12 +55,6 @@
             object-fit: cover;
         }
 
-        .logo-text {
-            font-size: 36px;
-            font-weight: 700;
-            color: white;
-        }
-
         .logo-title {
             font-size: 20px;
             font-weight: 700;
@@ -70,7 +62,6 @@
             letter-spacing: 1px;
         }
 
-        /* Form Card */
         .form-card {
             background: white;
             border-radius: 20px;
@@ -91,7 +82,6 @@
             background: linear-gradient(to right, #1e3a8a, #3b82f6);
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
             margin-bottom: 25px;
@@ -116,7 +106,6 @@
             box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3);
         }
 
-        /* Form Styles */
         .form {
             display: none;
         }
@@ -128,7 +117,7 @@
 
         .form-title {
             text-align: center;
-            margin-bottom:-25px;
+            margin-bottom: 25px;
             font-size: 24px;
             color: #1e3a8a;
             font-weight: 600;
@@ -161,7 +150,6 @@
             outline: none;
         }
 
-        /* Social Buttons */
         .social-buttons {
             display: flex;
             flex-direction: column;
@@ -206,7 +194,6 @@
             color: #007BFF;
         }
 
-        /* Primary Button */
         .btn-primary {
             width: 100%;
             padding: 15px;
@@ -228,7 +215,6 @@
             box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
         }
 
-        /* Links */
         .form-links {
             text-align: center;
             margin-top: 20px;
@@ -265,7 +251,6 @@
             font-size: 14px;
         }
 
-        /* Password strength indicator */
         .password-strength {
             height: 5px;
             border-radius: 5px;
@@ -302,61 +287,67 @@
             margin-top: 5px;
         }
 
-        /* Animations */
+        .error-message {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #d63031;
+            display: none;
+        }
+
+        .success-message {
+            background: #e6ffe6;
+            color: #00b894;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #00b894;
+            display: none;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0%, 33% { content: '.'; }
+            34%, 66% { content: '..'; }
+            67%, 100% { content: '...'; }
+        }
+
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive Design */
         @media (max-width: 480px) {
-            .container {
-                max-width: 100%;
-            }
-            
-            .form-card {
-                padding: 18px 20px;
-            }
-            
-            .logo-title {
-                font-size: 18px;
-            }
-            
-            .form-title {
-                font-size: 22px;
-            }
+            .container { max-width: 100%; }
+            .form-card { padding: 18px 20px; }
+            .logo-title { font-size: 18px; }
+            .form-title { font-size: 22px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Logo - Updated to match landing page -->
         <div class="logo-container">
             <div class="logo">
                 <img src="images/techroute.png" alt="TechRoute Logo">
@@ -364,9 +355,11 @@
             <div class="logo-title">TechRoute</div>
         </div>
 
-        <!-- Form Card -->
         <div class="form-card">
-            <!-- Tabs -->
+            <!-- Error and Success Messages -->
+            <div class="error-message" id="error-message"></div>
+            <div class="success-message" id="success-message"></div>
+
             <div class="tabs">
                 <div class="tab active" data-tab="login">Login</div>
                 <div class="tab" data-tab="signup">Sign Up</div>
@@ -377,10 +370,10 @@
                 <h2 class="form-title">Welcome Back</h2>
                 
                 <div class="social-buttons">
-                    <button type="button" class="social-btn google">
+                    <button type="button" class="social-btn google" id="google-login-btn">
                         <i class="fab fa-google"></i> Continue with Google
                     </button>
-                    <button type="button" class="social-btn facebook">
+                    <button type="button" class="social-btn facebook" id="facebook-login-btn">
                         <i class="fab fa-facebook-f"></i> Continue with Facebook
                     </button>
                     <button type="button" class="social-btn email" id="email-login-btn">
@@ -395,13 +388,13 @@
                 <div class="email-fields" id="email-login-fields" style="display: none;">
                     <div class="form-group">
                         <label class="form-label" for="login-email">Email Address</label>
-                        <input type="email" id="login-email" class="form-input" placeholder="Enter your email">
+                        <input type="email" id="login-email" class="form-input" placeholder="Enter your email" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="login-password">Password</label>
-                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password">
+                        <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required>
                     </div>
-                    <button type="submit" class="btn-primary">Login</button>
+                    <button type="submit" class="btn-primary" id="login-submit-btn">Login</button>
                 </div>
 
                 <div class="form-links">
@@ -416,30 +409,30 @@
                 
                 <div class="form-group">
                     <label class="form-label" for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name">
+                    <input type="text" id="signup-name" class="form-input" placeholder="Enter your full name" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="signup-email">Email Address</label>
-                    <input type="email" id="signup-email" class="form-input" placeholder="Enter your email">
+                    <input type="email" id="signup-email" class="form-input" placeholder="Enter your email" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="signup-password">Password</label>
-                    <input type="password" id="signup-password" class="form-input" placeholder="Create a password">
+                    <input type="password" id="signup-password" class="form-input" placeholder="Create a password (min. 6 characters)" required>
                     <div class="password-strength">
                         <div class="password-strength-bar" id="password-strength-bar"></div>
                     </div>
-                    <div class="password-hint" id="password-hint">Use 8+ characters with a mix of letters, numbers & symbols</div>
+                    <div class="password-hint" id="password-hint">Use 6+ characters with a mix of letters, numbers & symbols</div>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label" for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" class="form-input" placeholder="Confirm your password">
+                    <input type="password" id="signup-confirm-password" class="form-input" placeholder="Confirm your password" required>
                     <div class="password-hint" id="confirm-password-hint"></div>
                 </div>
                 
-                <button type="submit" class="btn-primary">Create Account</button>
+                <button type="submit" class="btn-primary" id="signup-submit-btn">Create Account</button>
 
                 <div class="form-links">
                     <p style="margin-top: 15px;">Already have an account? <a href="#" class="link" id="switch-to-login">Login</a></p>
@@ -448,6 +441,245 @@
         </div>
     </div>
 
+       <!-- Firebase SDK - FIXED VERSION -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            GoogleAuthProvider,
+            FacebookAuthProvider,
+            signInWithPopup,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        console.log('🚀 STARTING FIREBASE - FIXED VERSION...');
+
+        // Firebase configuration - UPDATED
+        const firebaseConfig = {
+            apiKey: "AIzaSyDB8NztWfn5TPQio3z0ycr2i8HmtqXlly8",
+            authDomain: "techroute-app.firebaseapp.com",
+            projectId: "techroute-app",
+            storageBucket: "techroute-app.firebasestorage.app",
+            messagingSenderId: "9216813599",
+            appId: "1:9216813599:web:09d001782de84a48dbc32a",
+            measurementId: "G-V1J2SL6LHD"
+        };
+
+        console.log('📋 Firebase Config:', firebaseConfig);
+
+        try {
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            
+            // IMPORTANT: Set persistence to fix invalid-credential
+            auth.useDeviceLanguage();
+            
+            console.log('✅ Firebase initialized successfully!');
+
+            // Configure Google Provider
+            const googleProvider = new GoogleAuthProvider();
+            googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
+
+            // Configure Facebook Provider
+            const facebookProvider = new FacebookAuthProvider();
+
+            // Enhanced error handler for invalid-credential
+            function handleAuthError(error, context) {
+                console.error(`❌ ${context} ERROR:`, error);
+                console.log('🔍 Error code:', error.code);
+                console.log('🔍 Error message:', error.message);
+                
+                const errorMap = {
+                    'auth/invalid-credential': '❌ Invalid login credentials. Please try signing up first or check your email/password.',
+                    'auth/invalid-email': '❌ Please enter a valid email address',
+                    'auth/user-disabled': '❌ This account has been disabled',
+                    'auth/user-not-found': '❌ No account found. Please sign up first.',
+                    'auth/wrong-password': '❌ Incorrect password',
+                    'auth/email-already-in-use': '❌ An account with this email already exists',
+                    'auth/weak-password': '❌ Password should be at least 6 characters',
+                    'auth/popup-blocked': '❌ Popup was blocked. Please allow popups.',
+                    'auth/network-request-failed': '❌ Network error. Check your internet.',
+                    'auth/operation-not-allowed': '❌ Email/password accounts are not enabled in Firebase Console.',
+                    'auth/unauthorized-domain': `❌ Domain not authorized. Add ${window.location.hostname} to Firebase.`
+                };
+                
+                const friendlyMessage = errorMap[error.code] || `❌ Authentication failed: ${error.code}`;
+                showMessage('error-message', friendlyMessage);
+                
+                // Special handling for invalid-credential
+                if (error.code === 'auth/invalid-credential') {
+                    console.log('💡 TIP: Try signing up first, or use test@test.com / 123456');
+                }
+            }
+
+            // UI Functions
+            function showMessage(elementId, message, isError = true) {
+                const element = document.getElementById(elementId);
+                element.textContent = message;
+                element.style.display = 'block';
+                
+                if (isError) {
+                    element.className = 'error-message';
+                } else {
+                    element.className = 'success-message';
+                }
+                
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 5000);
+            }
+
+            function setLoading(button, isLoading) {
+                if (isLoading) {
+                    button.classList.add('loading');
+                    button.disabled = true;
+                } else {
+                    button.classList.remove('loading');
+                    button.disabled = false;
+                }
+            }
+
+            function redirectToCareerPaths() {
+                console.log('🔄 Redirecting to CareerPaths.html...');
+                window.location.href = "CareerPaths.html";
+            }
+
+            // SIGNUP FIRST - Then login
+            document.getElementById('signup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm-password').value;
+                const submitBtn = document.getElementById('signup-submit-btn');
+
+                console.log('🔄 Starting email signup...', { name, email });
+                
+                if (!name || !email || !password || !confirmPassword) {
+                    showMessage('error-message', '❌ Please fill in all fields');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showMessage('error-message', "❌ Passwords do not match");
+                    return;
+                }
+
+                if (password.length < 6) {
+                    showMessage('error-message', "❌ Password should be at least 6 characters long");
+                    return;
+                }
+
+                setLoading(submitBtn, true);
+
+                try {
+                    console.log('📝 Creating user account...');
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    console.log('✅ Email signup successful!', userCredential.user);
+                    
+                    // Update profile with display name
+                    await updateProfile(userCredential.user, {
+                        displayName: name
+                    });
+
+                    showMessage('success-message', `🎉 Account created successfully for ${name}!`, false);
+                    setTimeout(redirectToCareerPaths, 1500);
+                } catch (error) {
+                    console.error('❌ Email signup failed!');
+                    handleAuthError(error, 'Email Signup');
+                } finally {
+                    setLoading(submitBtn, false);
+                }
+            });
+
+            // LOGIN - Only after signing up
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const submitBtn = document.getElementById('login-submit-btn');
+                
+                console.log('🔄 Starting email login...', { email });
+                
+                if (!email || !password) {
+                    showMessage('error-message', '❌ Please fill in all fields');
+                    return;
+                }
+
+                setLoading(submitBtn, true);
+                
+                try {
+                    console.log('📝 Attempting login...');
+                    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                    console.log('✅ Email login successful!', userCredential.user);
+                    showMessage('success-message', `🎉 Welcome back, ${userCredential.user.email}!`, false);
+                    setTimeout(redirectToCareerPaths, 1500);
+                } catch (error) {
+                    console.error('❌ Email login failed!');
+                    
+                    // Special suggestion for invalid-credential
+                    if (error.code === 'auth/invalid-credential') {
+                        showMessage('error-message', '❌ No account found with these credentials. Please sign up first or use: test@test.com / 123456');
+                    } else {
+                        handleAuthError(error, 'Email Login');
+                    }
+                } finally {
+                    setLoading(submitBtn, false);
+                }
+            });
+
+            // Google Authentication
+            document.getElementById('google-login-btn').addEventListener('click', async () => {
+                const btn = document.getElementById('google-login-btn');
+                console.log('🔄 Starting Google authentication...');
+                
+                setLoading(btn, true);
+                
+                try {
+                    console.log('📝 Calling Google sign-in...');
+                    const result = await signInWithPopup(auth, googleProvider);
+                    console.log('✅ Google authentication successful!', result.user);
+                    showMessage('success-message', `🎉 Welcome, ${result.user.displayName || result.user.email}!`, false);
+                    setTimeout(redirectToCareerPaths, 1500);
+                } catch (error) {
+                    console.error('❌ Google authentication failed!');
+                    handleAuthError(error, 'Google Authentication');
+                } finally {
+                    setLoading(btn, false);
+                }
+            });
+
+            // Facebook Authentication
+            document.getElementById('facebook-login-btn').addEventListener('click', async () => {
+                const btn = document.getElementById('facebook-login-btn');
+                console.log('🔄 Starting Facebook authentication...');
+                
+                setLoading(btn, true);
+                
+                try {
+                    console.log('📝 Calling Facebook sign-in...');
+                    const result = await signInWithPopup(auth, facebookProvider);
+                    console.log('✅ Facebook authentication successful!', result.user);
+                    showMessage('success-message', `🎉 Welcome, ${result.user.displayName || result.user.email}!`, false);
+                    setTimeout(redirectToCareerPaths, 1500);
+                } catch (error) {
+                    console.error('❌ Facebook authentication failed!');
+                    handleAuthError(error, 'Facebook Authentication');
+                } finally {
+                    setLoading(btn, false);
+                }
+            });
+
+        } catch (error) {
+            console.error('💥 FIREBASE INITIALIZATION FAILED:', error);
+            showMessage('error-message', `❌ Firebase failed to initialize: ${error.message}`);
+        }
+    </script>
     <script>
         // Tab switching functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -498,7 +730,7 @@
                 const password = this.value;
                 let strength = 0;
                 
-                if (password.length >= 8) strength += 1;
+                if (password.length >= 6) strength += 1;
                 if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
                 if (password.match(/\d/)) strength += 1;
                 if (password.match(/[^a-zA-Z\d]/)) strength += 1;
@@ -506,7 +738,7 @@
                 // Update strength bar
                 passwordStrengthBar.className = 'password-strength-bar';
                 if (password.length === 0) {
-                    passwordHint.textContent = 'Use 8+ characters with a mix of letters, numbers & symbols';
+                    passwordHint.textContent = 'Use 6+ characters with a mix of letters, numbers & symbols';
                 } else if (strength <= 1) {
                     passwordStrengthBar.classList.add('strength-weak');
                     passwordHint.textContent = 'Weak password - try adding uppercase letters, numbers, or symbols';
@@ -536,52 +768,6 @@
                     confirmPasswordHint.textContent = 'Passwords do not match';
                     confirmPasswordHint.style.color = '#ff4757';
                 }
-            });
-            
-            // Form submissions
-            document.getElementById('login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
-                
-                if (email && password) {
-                    alert('Login successful! Redirecting...');
-                    // In a real app, you would handle authentication here
-                } else {
-                    alert('Please fill in all fields');
-                }
-            });
-            
-            document.getElementById('signup-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('signup-name').value;
-                const email = document.getElementById('signup-email').value;
-                const password = document.getElementById('signup-password').value;
-                const confirmPassword = document.getElementById('signup-confirm-password').value;
-                
-                if (name && email && password && confirmPassword) {
-                    if (password === confirmPassword) {
-                        alert('Account created successfully!');
-                        // In a real app, you would handle registration here
-                    } else {
-                        alert('Passwords do not match');
-                    }
-                } else {
-                    alert('Please fill in all fields');
-                }
-            });
-            
-            // Social button handlers
-            document.querySelectorAll('.social-btn.google').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    alert('Redirecting to Google authentication...');
-                });
-            });
-            
-            document.querySelectorAll('.social-btn.facebook').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    alert('Redirecting to Facebook authentication...');
-                });
             });
         });
     </script>
