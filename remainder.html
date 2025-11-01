@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechRoute Daily Motivation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1e3a8a;
+            --secondary-blue: #3b82f6;
+            --light-blue: #dbeafe;
+            --white: #ffffff;
+            --light-gray: #f8fafc;
+            --dark-text: #1e293b;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --glow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: var(--dark-text);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Back Button Styles */
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
+            padding-top: 20px;
+        }
+
+        h1 {
+            color: var(--white);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .subheading {
+            color: var(--light-blue);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow), var(--glow);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            font-size: 1.5rem;
+        }
+
+        .quote-card {
+            grid-column: span 2;
+        }
+
+        .quote-text {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: var(--dark-text);
+        }
+
+        .quote-author {
+            text-align: right;
+            color: var(--secondary-blue);
+            font-weight: 500;
+        }
+
+        .favorite-btn {
+            background: var(--secondary-blue);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .favorite-btn:hover {
+            background: var(--primary-blue);
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .task-item:hover {
+            background: var(--light-gray);
+        }
+
+        .task-checkbox {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .task-label {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .task-completed {
+            text-decoration: line-through;
+            color: #94a3b8;
+        }
+
+        .streak-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .streak-count {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin: 10px 0;
+        }
+
+        .streak-text {
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .tip-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .notification-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--secondary-blue);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        .notification-status {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .status-enabled {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-disabled {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-denied {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: var(--white);
+            color: var(--primary-blue);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .btn:hover {
+            background: var(--light-blue);
+            transform: translateY(-3px);
+        }
+
+        .btn-primary {
+            background: var(--secondary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-blue);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: var(--light-blue);
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .time-display {
+            text-align: center;
+            margin: 20px 0;
+            color: white;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .quote-card {
+                grid-column: span 1;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .back-button {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <button class="back-button" id="backButton" title="Go Back">
+            ←
+        </button>
+
+        <header>
+            <h1>TechRoute Daily Motivation 🌅</h1>
+            <p class="subheading">Stay consistent, stay inspired.</p>
+            <div class="time-display" id="currentTime">Loading time...</div>
+        </header>
+
+        <div class="dashboard">
+            <div class="card quote-card">
+                <h2 class="card-title">💬 Today's Motivation</h2>
+                <p class="quote-text" id="quoteText">"Consistency beats talent."</p>
+                <p class="quote-author" id="quoteAuthor">- TechRoute</p>
+                <button class="favorite-btn" id="favoriteBtn">
+                    <span>⭐ Save Favorite Quote</span>
+                </button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🎯 Daily Goals</h2>
+                <div class="task-list">
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task1">
+                        <label class="task-label" for="task1">Watch 1 tutorial</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task2">
+                        <label class="task-label" for="task2">Solve 2 DSA problems</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task3">
+                        <label class="task-label" for="task3">Commit to GitHub</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task4">
+                        <label class="task-label" for="task4">Read tech article</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task5">
+                        <label class="task-label" for="task5">Practice coding challenge</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">🔥 Streak Tracker</h2>
+                <div class="streak-container">
+                    <svg width="120" height="120" viewBox="0 0 120 120">
+                        <circle cx="60" cy="60" r="54" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                        <circle class="progress-ring-circle" cx="60" cy="60" r="54" fill="none" stroke="#3b82f6" stroke-width="8" stroke-dasharray="339.292" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="streak-count" id="streakCount">7</div>
+                    <p class="streak-text">You're on a <span id="streakDays">7</span>-day learning streak!</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">💡 Today's Tech Tip</h2>
+                <p class="tip-text" id="techTip">Tip: Use console.table() to view arrays neatly in JS.</p>
+                <div class="notification-toggle">
+                    <span>Enable Notifications</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="notificationToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="notification-status" id="notificationStatus">
+                    Checking notification status...
+                </div>
+                <button class="btn" id="testNotificationBtn" style="margin-top: 10px; width: 100%;">
+                    <span>🔔 Test Notification</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="markDoneBtn">
+                <span>✅ Mark All as Done</span>
+            </button>
+            <button class="btn" id="viewHistoryBtn">
+                <span>📊 View History</span>
+            </button>
+            <button class="btn btn-primary" id="newQuoteBtn">
+                <span>🔄 New Quote</span>
+            </button>
+        </div>
+
+        <footer>
+            <p>© 2025 TechRoute | Keep Learning 💙</p>
+        </footer>
+    </div>
+
+    <script>
+        // Motivational quotes array
+        const quotes = [
+            { text: "Consistency beats talent.", author: "TechRoute" },
+            { text: "Every line of code brings you closer to your dream job.", author: "TechRoute" },
+            { text: "Start small. Stay steady. Keep growing.", author: "TechRoute" },
+            { text: "The expert in anything was once a beginner.", author: "Helen Hayes" },
+            { text: "Programming isn't about what you know; it's about what you can figure out.", author: "Chris Pine" },
+            { text: "The only way to learn a new programming language is by writing programs in it.", author: "Dennis Ritchie" },
+            { text: "Code is like humor. When you have to explain it, it's bad.", author: "Cory House" },
+            { text: "First, solve the problem. Then, write the code.", author: "John Johnson" },
+            { text: "Experience is the name everyone gives to their mistakes.", author: "Oscar Wilde" },
+            { text: "In order to be irreplaceable, one must always be different.", author: "Coco Chanel" },
+            { text: "Java is to JavaScript what car is to Carpet.", author: "Chris Heilmann" },
+            { text: "Sometimes it pays to stay in bed on Monday, rather than spending the rest of the week debugging Monday's code.", author: "Dan Salomon" },
+            { text: "Perfection is achieved not when there is nothing more to add, but rather when there is nothing more to take away.", author: "Antoine de Saint-Exupery" },
+            { text: "Ruby is rubbish! PHP is phpantastic!", author: "Nikita Popov" },
+            { text: "Code never lies, comments sometimes do.", author: "Ron Jeffries" },
+            { text: "Fix the cause, not the symptom.", author: "Steve Maguire" },
+            { text: "Optimism is an occupational hazard of programming: feedback is the treatment.", author: "Kent Beck" },
+            { text: "When to use iterative development? You should use iterative development only on projects that you want to succeed.", author: "Martin Fowler" },
+            { text: "Simplicity is the soul of efficiency.", author: "Austin Freeman" },
+            { text: "Before software can be reusable it first has to be usable.", author: "Ralph Johnson" }
+        ];
+
+        // Tech tips array
+        const techTips = [
+            "Tip: Use console.table() to view arrays neatly in JS.",
+            "Tip: Break large functions into small reusable modules.",
+            "Tip: Learn one new Git command daily.",
+            "Tip: Use semantic HTML for better accessibility and SEO.",
+            "Tip: Always validate user input on both client and server sides.",
+            "Tip: Keep your code DRY (Don't Repeat Yourself).",
+            "Tip: Write tests for your code to catch bugs early.",
+            "Tip: Use version control for every project, no matter how small.",
+            "Tip: Comment your code as if the next person maintaining it is a violent psychopath who knows where you live.",
+            "Tip: Learn keyboard shortcuts for your development environment to boost productivity."
+        ];
+
+        // DOM Elements
+        const quoteText = document.getElementById('quoteText');
+        const quoteAuthor = document.getElementById('quoteAuthor');
+        const favoriteBtn = document.getElementById('favoriteBtn');
+        const newQuoteBtn = document.getElementById('newQuoteBtn');
+        const techTip = document.getElementById('techTip');
+        const notificationToggle = document.getElementById('notificationToggle');
+        const notificationStatus = document.getElementById('notificationStatus');
+        const testNotificationBtn = document.getElementById('testNotificationBtn');
+        const markDoneBtn = document.getElementById('markDoneBtn');
+        const currentTime = document.getElementById('currentTime');
+        const streakCount = document.getElementById('streakCount');
+        const streakDays = document.getElementById('streakDays');
+        const backButton = document.getElementById('backButton');
+
+        // Task checkboxes
+        const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+        const taskLabels = document.querySelectorAll('.task-label');
+
+        // Progress circle
+        const progressCircle = document.querySelector('.progress-ring-circle');
+        const circumference = 2 * Math.PI * 54;
+        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        progressCircle.style.strokeDashoffset = circumference;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial quote and tip
+            displayRandomQuote();
+            displayRandomTechTip();
+            
+            // Update time
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Load saved tasks and streak
+            loadTasks();
+            loadStreak();
+            
+            // Set up notification system
+            setupNotifications();
+            
+            // Set up task listeners
+            setupTaskListeners();
+            
+            // Set up button listeners
+            setupButtonListeners();
+            
+            // Set up back button
+            setupBackButton();
+            
+            // Check if it's time for notification
+            checkNotificationTime();
+            
+            // Set up notification scheduler
+            setupNotificationScheduler();
+        });
+
+        // Set up back button functionality
+        function setupBackButton() {
+            backButton.addEventListener('click', function() {
+                // Redirect to CareerPaths.html
+                window.location.href = "CareerPaths.html";
+            });
+        }
+
+        // Display a random quote
+        function displayRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            const quote = quotes[randomIndex];
+            quoteText.textContent = `"${quote.text}"`;
+            quoteAuthor.textContent = `- ${quote.author}`;
+        }
+
+        // Display a random tech tip
+        function displayRandomTechTip() {
+            const randomIndex = Math.floor(Math.random() * techTips.length);
+            techTip.textContent = techTips[randomIndex];
+        }
+
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true 
+            });
+            currentTime.textContent = timeString;
+        }
+
+        // Set up notification system
+        function setupNotifications() {
+            // Check if notifications are supported
+            if (!("Notification" in window)) {
+                notificationToggle.disabled = true;
+                notificationStatus.textContent = "Notifications not supported in this browser";
+                notificationStatus.className = "notification-status status-denied";
+                return;
+            }
+            
+            // Update status display based on current permission
+            updateNotificationStatus();
+            
+            // Set initial toggle state based on permission and saved preference
+            if (Notification.permission === "granted") {
+                const notificationsEnabled = localStorage.getItem('techRouteNotifications') !== 'false';
+                notificationToggle.checked = notificationsEnabled;
+            }
+            
+            // Toggle notification permission
+            notificationToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    requestNotificationPermission();
+                } else {
+                    // Notifications will not be sent when toggled off
+                    localStorage.setItem('techRouteNotifications', 'false');
+                    updateNotificationStatus();
+                }
+            });
+            
+            // Test notification button
+            testNotificationBtn.addEventListener('click', function() {
+                if (Notification.permission === "granted" && localStorage.getItem('techRouteNotifications') === 'true') {
+                    sendNotification("🔔 Test Notification", "This is a test notification from TechRoute!");
+                } else {
+                    alert("Please enable notifications first using the toggle above.");
+                }
+            });
+        }
+
+        // Update notification status display
+        function updateNotificationStatus() {
+            if (!("Notification" in window)) {
+                notificationStatus.textContent = "Notifications not supported";
+                notificationStatus.className = "notification-status status-denied";
+                return;
+            }
+            
+            switch(Notification.permission) {
+                case "granted":
+                    const enabled = localStorage.getItem('techRouteNotifications') !== 'false';
+                    if (enabled) {
+                        notificationStatus.textContent = "Notifications are enabled";
+                        notificationStatus.className = "notification-status status-enabled";
+                    } else {
+                        notificationStatus.textContent = "Notifications are disabled";
+                        notificationStatus.className = "notification-status status-disabled";
+                    }
+                    break;
+                case "denied":
+                    notificationStatus.textContent = "Notifications are blocked. Please enable them in your browser settings.";
+                    notificationStatus.className = "notification-status status-denied";
+                    notificationToggle.disabled = true;
+                    break;
+                case "default":
+                    notificationStatus.textContent = "Notifications are not enabled. Please allow notifications when prompted.";
+                    notificationStatus.className = "notification-status status-disabled";
+                    break;
+            }
+        }
+
+        // Request notification permission
+        function requestNotificationPermission() {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === "granted") {
+                    localStorage.setItem('techRouteNotifications', 'true');
+                    updateNotificationStatus();
+                    sendNotification("🚀 TechRoute Reminder", "Notifications enabled! You'll receive daily motivation at 6 AM and 6 PM.");
+                } else {
+                    notificationToggle.checked = false;
+                    localStorage.setItem('techRouteNotifications', 'false');
+                    updateNotificationStatus();
+                }
+            });
+        }
+
+        // Send notification
+        function sendNotification(title, body) {
+            if (Notification.permission === "granted" && localStorage.getItem('techRouteNotifications') === 'true') {
+                const notification = new Notification(title, { 
+                    body, 
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💙</text></svg>',
+                    tag: 'techroute-notification'
+                });
+                
+                // Close notification after 5 seconds
+                setTimeout(() => {
+                    notification.close();
+                }, 5000);
+                
+                return true;
+            }
+            return false;
+        }
+
+        // Check if it's time for notification (6 AM or 6 PM)
+        function checkNotificationTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            
+            // For demo purposes, let's check every minute instead of just at 6:00
+            // In a real app, you would use a service worker for precise timing
+            if ((hours === 6 || hours === 18) && minutes === 0) {
+                const sent = sendNotification("🚀 TechRoute Reminder", "Time to code! Keep up your learning streak 💙");
+                if (sent) {
+                    console.log("Daily notification sent");
+                }
+            }
+        }
+
+        // Set up notification scheduler (for demo purposes)
+        function setupNotificationScheduler() {
+            // Check every minute if it's time for a notification
+            setInterval(checkNotificationTime, 60000);
+        }
+
+        // Set up task listeners
+        function setupTaskListeners() {
+            taskCheckboxes.forEach((checkbox, index) => {
+                // Load saved state
+                const savedState = localStorage.getItem(`techRouteTask${index}`);
+                if (savedState === 'completed') {
+                    checkbox.checked = true;
+                    taskLabels[index].classList.add('task-completed');
+                }
+                
+                // Add change listener
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        taskLabels[index].classList.add('task-completed');
+                        localStorage.setItem(`techRouteTask${index}`, 'completed');
+                    } else {
+                        taskLabels[index].classList.remove('task-completed');
+                        localStorage.setItem(`techRouteTask${index}`, 'incomplete');
+                    }
+                    updateProgress();
+                    updateStreak();
+                });
+            });
+        }
+
+        // Set up button listeners
+        function setupButtonListeners() {
+            // New quote button
+            newQuoteBtn.addEventListener('click', displayRandomQuote);
+            
+            // Mark all as done button
+            markDoneBtn.addEventListener('click', function() {
+                taskCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                    const index = Array.from(taskCheckboxes).indexOf(checkbox);
+                    taskLabels[index].classList.add('task-completed');
+                    localStorage.setItem(`techRouteTask${index}`, 'completed');
+                });
+                updateProgress();
+                updateStreak();
+            });
+            
+            // Favorite quote button
+            favoriteBtn.addEventListener('click', function() {
+                const currentQuote = quoteText.textContent;
+                localStorage.setItem('techRouteFavoriteQuote', currentQuote);
+                alert('Quote saved to favorites!');
+            });
+            
+            // View history button
+            document.getElementById('viewHistoryBtn').addEventListener('click', function() {
+                alert('History feature would show your past progress and streaks. This is a demo version.');
+            });
+        }
+
+        // Load tasks from localStorage
+        function loadTasks() {
+            let completedCount = 0;
+            taskCheckboxes.forEach((checkbox, index) => {
+                const savedState = localStorage.getItem(`techRouteTask${index}`);
+                if (savedState === 'completed') {
+                    checkbox.checked = true;
+                    taskLabels[index].classList.add('task-completed');
+                    completedCount++;
+                }
+            });
+            updateProgress(completedCount);
+        }
+
+        // Update progress circle
+        function updateProgress() {
+            const completedCount = document.querySelectorAll('.task-checkbox:checked').length;
+            const totalTasks = taskCheckboxes.length;
+            const progress = completedCount / totalTasks;
+            const offset = circumference - progress * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+        }
+
+        // Load streak from localStorage
+        function loadStreak() {
+            const savedStreak = localStorage.getItem('techRouteStreak') || '0';
+            streakCount.textContent = savedStreak;
+            streakDays.textContent = savedStreak;
+        }
+
+        // Update streak
+        function updateStreak() {
+            const completedCount = document.querySelectorAll('.task-checkbox:checked').length;
+            const totalTasks = taskCheckboxes.length;
+            
+            // If all tasks are completed, increment streak
+            if (completedCount === totalTasks) {
+                const currentStreak = parseInt(localStorage.getItem('techRouteStreak') || '0');
+                const today = new Date().toDateString();
+                const lastCompleted = localStorage.getItem('techRouteLastCompleted');
+                
+                // Only increment if not already completed today
+                if (lastCompleted !== today) {
+                    const newStreak = currentStreak + 1;
+                    localStorage.setItem('techRouteStreak', newStreak.toString());
+                    localStorage.setItem('techRouteLastCompleted', today);
+                    streakCount.textContent = newStreak;
+                    streakDays.textContent = newStreak;
+                    
+                    // Show celebration for milestone streaks
+                    if (newStreak % 7 === 0) {
+                        sendNotification("🎉 TechRoute Celebration", `Congratulations! You've reached a ${newStreak}-day streak!`);
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
